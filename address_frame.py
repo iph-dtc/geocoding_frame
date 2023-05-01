@@ -50,7 +50,8 @@ class AddressFrame:
     # Initialize Nominatim
     if NOM_URL is None:
         print('Please create .env file with NOM_URL or set with AddressFrame.set_geocoder_url method')
-    nom = Nominatim(domain=NOM_URL, scheme='http')
+    else:
+        nom = Nominatim(domain=NOM_URL, scheme='http')
 
     def __init__(self, frame: pd.DataFrame, add_col: str, city_col: str, state_col: str, zip_col: str,
                  state_filter=None, keep_temp_cols=True):
@@ -131,15 +132,19 @@ class AddressFrame:
 
         # start timer for geocoder
         geocoding_start = time()
-        self.frame[tgf['ac_geo']] = self.frame[tgf['temp_ac']].apply(
-            self.__class__.nom.geocode)
-        # 2: lookup with just add
-        self.frame[tgf['a_geo']] = self.frame[add_field].apply(
-            self.__class__.nom.geocode)
+        try:
+            self.frame[tgf['ac_geo']] = self.frame[tgf['temp_ac']].apply(
+                self.__class__.nom.geocode)
+            # 2: lookup with just add
+            self.frame[tgf['a_geo']] = self.frame[add_field].apply(
+                self.__class__.nom.geocode)
+            geocoding_stop = time()
+            print(
+                f'Geocoded dataset in {(geocoding_stop - geocoding_start):.2f}s.')
+        except AttributeError:
+            print('Unable to geocode. Please create .env file with NOM_URL or set with AddressFrame.set_geocoder_url '
+                  'method')
         # stop timer for geocoder
-        geocoding_stop = time()
-        print(
-            f'Geocoded dataset in {(geocoding_stop - geocoding_start):.2f}s.')
         # 3: combine geo fields
         self.__setattr__('geo_field', 'geo')
         self.frame[self.geo_field] = np.where(self.frame[tgf['ac_geo']].isna(
