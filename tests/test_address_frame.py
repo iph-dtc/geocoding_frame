@@ -6,7 +6,7 @@ from address_frame import AddressFrame
 
 @pytest.fixture
 def frame():
-    return pd.read_csv('./data/test_adds.csv')
+    return pd.read_csv('../data/test_adds.csv')
 
 
 @pytest.fixture
