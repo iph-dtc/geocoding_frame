@@ -4,4 +4,4 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'geocoding_frame'
-dependecies = ['git+https://github.com/iph-dtc/geocoding_frame.git']
+dependencies = ['git+https://github.com/iph-dtc/geocoding_frame.git']
