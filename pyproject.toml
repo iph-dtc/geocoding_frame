@@ -3,6 +3,6 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-version = ''
+version = 'v1.0.0'
 name = 'geocoding_frame'
 dependencies = ['geocoding_frame @ git+https://github.com/iph-dtc/geocoding_frame.git',]
